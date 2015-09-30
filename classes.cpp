@@ -7,68 +7,69 @@ class MyMatrix{
 	std::vector<std::vector<float>> vecvec;
 	public:
 	MyMatrix(bool ones, int dim){
-		std::vector<float> vec1(dim,0);
-		//(n,std::vector<int>(n,0))
-		for(int i; i < dim; i++){
+		std::vector<float> vec1((unsigned long) dim,0);
+		for(int i = 0; i < dim; i++){
 			vecvec.push_back(vec1);
 		}
-		if(ones == true ){
-			for(int i; i < dim; i++){
+		if(ones){
+			for(int i = 0; i < dim; i++){
 				vecvec[i][i]=1;
 			}
 		}
-		_dim = vecvec.size();
+		_dim = (int) vecvec.size();
 	}
-	MyMatrix(int dim) : MyMatrix(false,dim){}
+	MyMatrix(int dim) : MyMatrix(false,dim){
+
+	}
 	MyMatrix(std::vector<std::vector<float>> vec){
 		vecvec = vec;
-		_dim = vecvec.size();
+		_dim = (int) vecvec.size();
 	}
-	int dim() const{
-		return _dim;
+	unsigned long dim() {
+		return (unsigned long) _dim;
 	}
-	float readMe(int y, int x) const{
+	float get(int y, int x) const{
 		return vecvec[y][x];
 	}
-	void changeMe(int y,int x,float mdata){
+	void put(int y, int x, float mdata){
 		vecvec[y][x] = mdata;
 	}
 	void operator+=(const MyMatrix &b){
 		for(int i = 0; i < _dim; i++){
 			for(int j = 0; j < _dim; j++){
-				int tmp=(vecvec[i][j]+b.readMe(i,j));
+				int tmp= (int) (vecvec[i][j]+ b.get(i, j));
 				vecvec[i][j]=tmp;
 			}
 		}
 	}
-        void operator-=(const MyMatrix &b){
-                for(int i = 0; i < _dim; i++){
-                        for(int j = 0; j < _dim; j++){
-                                int tmp=(vecvec[i][j]-b.readMe(i,j));
-                                vecvec[i][j]=tmp;
-                        }
-                }
-        }
-        void operator*=(const MyMatrix &b){
+	void operator-=(const MyMatrix &b){
+		for(int i = 0; i < _dim; i++){
+			for(int j = 0; j < _dim; j++){
+				int tmp= (int) (vecvec[i][j]- b.get(i, j));
+				vecvec[i][j]=tmp;
+			}
+		}
+	}
+	void operator*=(const MyMatrix &b){
 		int tmp = 0;
-		std::vector<float> vectmp(dim,0);
+		std::vector<float> temporalVector((unsigned long) _dim,0);
 		for(int k = 0; k < _dim; k++){
 			for(int l = 0; l < _dim; l++){
-				vectmp[l] = vecvec[k][l];
-			}//TODO
+				temporalVector[l] = vecvec[k][l];
+			}
 			for(int i = 0; i < _dim; i++){
-        	                for(int j = 0; j < _dim; j++){
-        	        	        tmp+=(vectmp[j]+b.readMe(j,i));
-        	                }
+				for(int j = 0; j < _dim; j++){
+					tmp += temporalVector[j] + b.get(j, i);
+				}
 				vecvec[k][i]=tmp;
 				tmp=0;
-        	        }
+			}
 		}
-        }
+	}
 
 
 };
-//std::vector<std::vecto<int>>
+
 int main(){
 	
 }
