@@ -14,7 +14,7 @@ float vectorMultiply(std::vector<float> a,std::vector<float> b){
 	return c;
 }
 std::vector<float> vectorSubtraction(std::vector<float> a, std::vector<float> b){	// return a-b
-	std::vector<float> c((unsigned long) a.size(),0);
+	std::vector<float> c(a.size(),0);
 	for (int i = 0; i < (int)a.size() ; i++){
 		c[i] = a[i] - b[i];
 	}
@@ -117,7 +117,7 @@ int main(){
 	inputDim >> dim;
 	MyMatrix A(dim);
 	MyMatrix B(dim);
-	MyMatrix C(true,dim);
+	//MyMatrix C(true,dim);
 	// input begin
 	for (int i = 0; i < dim; i++){
 		for (int j = 0; j < dim; j++){
@@ -162,5 +162,5 @@ int main(){
 	inputA.close();
 	inputB.close();
 	inputDim.close();
-	
+	return 0;
 }
