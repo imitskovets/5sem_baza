@@ -23,8 +23,7 @@ std::vector<float> vectorSubtraction(std::vector<float> a, std::vector<float> b)
 
 class MyMatrix{
 	int _dim;
-	std::vector<std::vector<float>> vecvec;
-	public:
+public:
 	MyMatrix(bool ones, int dim){
 		std::vector<float> vec1((unsigned long) dim,0);
 		for(int i = 0; i < dim; i++){
@@ -71,18 +70,17 @@ class MyMatrix{
 		}
 	}
 	void operator*=(const MyMatrix &b){
-		std::vector<float> temporalVectorA((unsigned long) _dim,0);
-		std::vector<float> temporalVectorB((unsigned long) _dim,0);
-		for(int k = 0; k < _dim; k++){
-			for(int l = 0; l < _dim; l++){
-				//temporalVectorA[l] = vecvec[k][l];
-				temporalVectorA = vecvec[k];
+		for(int i = 0; i < _dim; i++){
+			std::vector<float> temporalVectorA((unsigned long) _dim,0);
+			for (int h = 0; h < _dim; h++){
+				temporalVectorA[h] = vecvec[i][h];
 			}
-			for(int i = 0; i < _dim; i++){
+			for(int k = 0; k < _dim; k++){
+				std::vector<float> temporalVectorB((unsigned long) _dim,0);
 				for(int l = 0; l < _dim; l++){
-					temporalVectorB[l] = b.get(l, i);
+					temporalVectorB[l] = b.get(l, k);
 				}
-				vecvec[k][i] = vectorMultiply(temporalVectorA, temporalVectorB);
+				vecvec[i][k] = vectorMultiply(temporalVectorA, temporalVectorB);
 			}
 		}
 	}
@@ -94,14 +92,14 @@ class MyMatrix{
 		}
 	}
 	void operator^(const MyMatrix &b){	// ^(-1)	vecvec must be E
+		std::vector<float> temporalVectorA((unsigned long) _dim,0);
 		for(int i = 0; i < _dim; i++){
-			for(int j = 0; j < _dim; j++){
-				vecvec[i][j] = b.get(j,i);
-			}
+
 		}
 	}
 
 
+	std::vector<std::vector<float>> vecvec;
 };
 
 int main(){
@@ -115,46 +113,47 @@ int main(){
 	std::string tmps;
 	int dim;
 	inputDim >> dim;
-	MyMatrix A(dim);
-	MyMatrix B(dim);
-	//MyMatrix C(true,dim);
+	MyMatrix A(true,dim);
+	MyMatrix B(true,dim);
+	MyMatrix C(true,dim);
 	// input begin
 	for (int i = 0; i < dim; i++){
 		for (int j = 0; j < dim; j++){
 			inputA >> tmps;
 			tmp = std::stof(tmps);
-			A.put(j, i, tmp);
+			A.put(i, j, tmp);
 		}
 	}
 	for (int i = 0; i < dim; i++){
 		for (int j = 0; j < dim; j++){
 			inputB >> tmps;
 			tmp = std::stof(tmps);
-			B.put(j, i, tmp);
+			B.put(i, j, tmp);
 		}
 	}
 	// input end
 	std::cout << "Matrix A:" << std::endl;
 	for (int i = 0; i < dim; i++){
 		for (int j = 0; j < dim; j++){
-			tmp = A.get(j,i);
+			tmp = A.get(i,j);
 			std::cout << tmp << " ";
 		}
 		std::cout << std::endl;
 	}
+
 	std::cout << "Matrix B:" << std::endl;
 	for (int i = 0; i < dim; i++){
 		for (int j = 0; j < dim; j++){
-			tmp = B.get(j,i);
+			tmp = B.get(i,j);
 			std::cout << tmp << " ";
 		}
 		std::cout << std::endl;
 	}
-	A / B;
-	std::cout << "Matrix A/B:" << std::endl;
+	A *=B;
+	std::cout << "Matrix A*=B:" << std::endl;
 	for (int i = 0; i < dim; i++){
 		for (int j = 0; j < dim; j++){
-			tmp = A.get(j,i);
+			tmp = A.get(i,j);
 			std::cout << tmp << " ";
 		}
 		std::cout << std::endl;
@@ -162,5 +161,6 @@ int main(){
 	inputA.close();
 	inputB.close();
 	inputDim.close();
+	std::cout << A.vecvec[1][2];
 	return 0;
 }
