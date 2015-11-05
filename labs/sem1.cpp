@@ -12,9 +12,9 @@ double func(double x, double h, double a, double b){
     return ((1 + b / pow(a, 2)) * exp(a * x) - (b * x) / a - b / a * a);
 }
 
-void plot()
+void myPlot()
 {
-    FILE *gp = popen("gnuplot -persist","w"); // gp - дескриптор канала
+    FILE *gp = popen("gnuplot -persist","w");
 
     if (gp == NULL)
     {
@@ -34,13 +34,14 @@ int main(){
     double x_end = 2;
     double h;
     double norma = 1;
-    //std::cout << "N = " ;
-   //std::cin >> N;
+    std::cout << "N = " ;
+    std::cin >> N;
+    std::cout << "a = " ;
+    std::cin >> a;
+    std::cout << "b = " ;
+    std::cin >> b;
     N++;
     h = (x_end - x_start) / (N - 1);
-    /*long double X[(long int)(N+1)];
-    long double myY[(long int)(N+1)];
-    long double Y[(long int)(N+1)];*/
     double X;
     double Y;
     double myY;
@@ -62,7 +63,7 @@ int main(){
         fprintf(fd2,"%f\t%f\n", X, Y);
         errorY += h * pow((Y - myY), 2);
     }
-    plot();
+    myPlot();
     norma = sqrt(errorY);
     std::cout << norma << std::endl;
 
